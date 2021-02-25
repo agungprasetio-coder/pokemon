@@ -1,5 +1,5 @@
 import ReactDom from 'react-dom'
-import { useParams } from 'react-router-dom'
+import { useParams, useHistory } from 'react-router-dom'
 import { useEffect, useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 
@@ -7,6 +7,7 @@ function PokemonDetail (props) {
   const { pokemonName } = useParams()
   const myPokemon = useSelector(state => state.myPokemon)
   const dispatch = useDispatch()
+  const history = useHistory()
   const [image, setImage] = useState('')
   const [moves, setMoves] = useState([])
   const [types, setTypes] = useState([])
@@ -34,15 +35,21 @@ function PokemonDetail (props) {
         data
       }
     })
+    history.push('/my-pokemon')
   }
 
   const successCatch = (
     <div>
       <p>Horrayy!! Pokemon catched!! Give a nickname:</p>
-      <p>nick: {nick}</p>
       <form onSubmit={handleSubmit}>
-        <input type="text" onChange={handleNickname}/>
-        <input type="submit" value="Add Nickname"/>
+        <div className="row">
+          <div className="col">
+            <input type="text" onChange={handleNickname} className="form-control" placeholder="Nickname" aria-label="Nickname" aria-describedby="basic-addon1"/>
+          </div>
+          <div className="col">
+            <button className="btn btn-info" type="submit">Add Nickname</button>
+          </div>
+        </div>
       </form>
     </div>
   )
@@ -85,18 +92,35 @@ function PokemonDetail (props) {
   }, [])
   return (
     <>
-      <h1>About {pokemonName}</h1>
-      <img src={image} alt={pokemonName} style={{height:100}}/>
-      <h6>Moves</h6>
-      <p>{moves.map(({move}, index) => move.name).join(', ')}</p>
-      <h6>Types</h6>
-      <p>{types.map(({type}, index) => type.name).join(', ')}</p>
-      <p>
-        {JSON.stringify(myPokemon.filter(pokemon => pokemon.name !== pokemonName))}
-      </p>
-      <button id="btn1" onClick={catchPokemon}>Catch</button>
-      <br/>
-      <div id="render"></div>
+      <img className="rounded rounded-circle border ml-4 mr-4 mb-3" src={image} alt={pokemonName} style={{height:100}}/>{pokemonName}
+      <div className="row custom-row">
+        <div className="col-sm-8">
+          <div className="card">
+            <div className="card-header">
+              Moves
+            </div>
+            <div className="card-body custom-card-body">
+              <blockquote className="blockquote mb-0">
+                <p className="small">{moves.map(({move}, index) => move.name).join(', ')}</p>
+              </blockquote>
+            </div>
+          </div>
+        </div>
+        <div className="col-sm-4">
+          <div className="card">
+            <div className="card-header">
+              Types
+            </div>
+            <div className="card-body">
+              <blockquote className="blockquote mb-0">
+                <p className="small">{types.map(({type}, index) => type.name).join(', ')}</p>
+              </blockquote>
+            </div>
+          </div>
+        </div>
+      </div>
+      <button className="btn btn-primary ml-4 mb-4" onClick={catchPokemon}>Catch</button>
+      <div id="render" className="ml-4 mb-4 mr-4"></div>
     </>
   )
 }
