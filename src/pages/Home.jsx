@@ -14,12 +14,19 @@ function Home () {
 
   return (
     <>
-      <h1>Pokemon List</h1>
-      <ol>
+      <div className="row custom-row">
         {pokemonList.map((pokemon, index) => (
-          <li key={index}><Link to={`/${pokemon.name}`}>{pokemon.name}</Link></li>
+          <div className="col-sm-3" key={index}>
+            <div className="card">
+              <div className="card-body custom-card-body-height">
+                <h5 className="card-title">{pokemon.name}</h5>
+                <p className="card-text">{pokemon.url}</p>
+              </div>
+              <Link to={`/${pokemon.name}`} className="custom-btn btn-info">See Detail</Link>
+            </div>
+          </div>
         ))}
-      </ol>
+      </div>
     </>
   )
 }

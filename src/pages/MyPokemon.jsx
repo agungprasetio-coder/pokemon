@@ -15,12 +15,18 @@ function MyPokemon () {
 
   return (
     <>
-      <h1>My Pokemon List</h1>
-      <ol>
+      <div className="row custom-row">
         {myPokemon.map((pokemon, index) => (
-          <li key={index}>{pokemon.name} <button onClick={(() => deleteMyPokemon(pokemon.name))}>Delete</button></li>
+          <div className="col-sm-3" key={index}>
+            <div className="card">
+              <div className="card-body">
+                <h5 className="card-title">{pokemon.name}</h5>
+              </div>
+              <button className="custom-btn btn-danger" onClick={(() => deleteMyPokemon(pokemon.name))}>Delete</button>
+            </div>
+          </div>
         ))}
-      </ol>
+      </div>
     </>
   )
 }
