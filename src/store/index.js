@@ -1,53 +1,51 @@
-import { createStore, applyMiddleware, compose } from 'redux'
-import thunk from 'redux-thunk'
+import { createStore, applyMiddleware, compose } from 'redux';
+import thunk from 'redux-thunk';
 
 const initData = {
   pokemonList: [],
-  myPokemon: []
-}
+  myPokemon: [],
+};
 
-export function fetchPokemonList () {
+export function fetchPokemonList() {
   return (dispatch) => {
     fetch('https://pokeapi.co/api/v2/pokemon')
-    .then(res => {
-      if (!res.ok) {
-        return Promise.reject('Something Wrong!')
-      }
-      return res.json()
-    })
-    .then(({results}) => {
-      dispatch({
-        type: 'GET_POKEMON_LIST',
-        payload: {
-          data: results
+      .then((res) => {
+        if (!res.ok) {
+          return Promise.reject('Something Wrong!');
         }
+        return res.json();
       })
-    })
-    .catch(err => {
-      console.log(err, '<<< ini isi err')
-    })
-  }
+      .then(({ results }) => {
+        dispatch({
+          type: 'GET_POKEMON_LIST',
+          payload: {
+            data: results,
+          },
+        });
+      })
+      .catch((err) => {
+        console.log(err, '<<< ini isi err');
+      });
+  };
 }
 
-function reducer (state = initData, action) {
+function reducer(state = initData, action) {
   switch (action.type) {
     case 'GET_POKEMON_LIST':
-      const pokemonList = action.payload.data
-      return {...state, pokemonList}
+      const pokemonList = action.payload.data;
+      return { ...state, pokemonList };
     case 'CATCH_POKEMON':
-      console.log(action.payload.data.name, '<< isi payload.data.name')
-      const myPokemonAfterCatch = state.myPokemon.concat(action.payload.data)
-      console.log(myPokemonAfterCatch, '<<<< myPokemonAfterCatch')
-      return {...state, myPokemon: myPokemonAfterCatch}
+      const myPokemonAfterCatch = state.myPokemon.concat(action.payload.data);
+      return { ...state, myPokemon: myPokemonAfterCatch };
     case 'DELETE_MY_POKEMON':
-      const myPokemonAfterDelete = state.myPokemon.filter(pokemon => pokemon.name !== action.payload.data.name)
-      return {...state, myPokemon: myPokemonAfterDelete}
+      const myPokemonAfterDelete = state.myPokemon.filter((pokemon) => pokemon.name !== action.payload.data.name);
+      return { ...state, myPokemon: myPokemonAfterDelete };
     default:
-      return state
+      return state;
   }
 }
 
-const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose
-const store = createStore(reducer, composeEnhancers(applyMiddleware(thunk)))
+const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
+const store = createStore(reducer, composeEnhancers(applyMiddleware(thunk)));
 
-export default store
+export default store;
