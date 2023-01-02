@@ -1,6 +1,6 @@
 {
   "extends": ["prettier"],
-  "plugins": ["prettier"],
+  "plugins": ["prettier", "import"],
   "rules": {
     "import/no-extraneous-dependencies": ["error", { "devDependencies": true }],
     "prettier/prettier": ["error"],
